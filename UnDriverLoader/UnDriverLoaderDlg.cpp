@@ -101,9 +101,14 @@ void CUnDriverLoaderDlg::OnBnClickedRegister()
 {
 	CString str;
 	DWORD ErrCode;
+	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
+	GetDlgItemText(IDC_ServiceName, strDriverName);
+	m_DriverHelp.setName(strDriverName);
+	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.RegisterDriver())
 	{
 		MessageBoxW(_T("服务注册成功！"),_T("信息"),MB_OK|MB_ICONINFORMATION);
+		return;
 	}
 	ErrCode = GetLastError();
 	str.Format(_T("服务注册失败！错误代码：%#x"), ErrCode);
@@ -115,9 +120,14 @@ void CUnDriverLoaderDlg::OnBnClickedRun()
 {
 	CString str;
 	DWORD ErrCode;
+	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
+	GetDlgItemText(IDC_ServiceName, strDriverName);
+	m_DriverHelp.setName(strDriverName);
+	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.RunDriver())
 	{
 		MessageBoxW(_T("服务运行成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		return;
 	}
 	ErrCode = GetLastError();
 	str.Format(_T("服务运行失败！错误代码：%#x"), ErrCode);
@@ -129,9 +139,14 @@ void CUnDriverLoaderDlg::OnBnClickedStop()
 {
 	CString str;
 	DWORD ErrCode;
+	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
+	GetDlgItemText(IDC_ServiceName, strDriverName);
+	m_DriverHelp.setName(strDriverName);
+	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.StopDriver())
 	{
 		MessageBoxW(_T("服务停止成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		return;
 	}
 	ErrCode = GetLastError();
 	str.Format(_T("服务停止失败！错误代码：%#x"), ErrCode);
@@ -143,9 +158,14 @@ void CUnDriverLoaderDlg::OnBnClickedUnload()
 {
 	CString str;
 	DWORD ErrCode;
+	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
+	GetDlgItemText(IDC_ServiceName, strDriverName);
+	m_DriverHelp.setName(strDriverName);
+	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.UnRegisterDriver())
 	{
 		MessageBoxW(_T("服务卸载成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		return;
 	}
 	ErrCode = GetLastError();
 	str.Format(_T("服务卸载失败！错误代码：%#x"), ErrCode);
@@ -168,8 +188,6 @@ void CUnDriverLoaderDlg::OnEnChangeMfceditbrowse()
 	SplitStr(strDriverPath, gap, items);
 	INT_PTR num = items.GetCount();
 	strDriverName = items.GetAt(num-1);
-	m_DriverHelp.setName(strDriverName);
-	m_DriverHelp.setPath(strDriverPath);
 	name = (CEdit*)GetDlgItem(IDC_ServiceName);
 	name->SetWindowTextW(strDriverName.AllocSysString());
 	
@@ -178,7 +196,6 @@ void CUnDriverLoaderDlg::OnEnChangeMfceditbrowse()
 
 void CUnDriverLoaderDlg::OnDropFiles(HDROP hDropInfo)
 {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	CString gap("\\");
 	CStringArray items;
@@ -191,8 +208,6 @@ void CUnDriverLoaderDlg::OnDropFiles(HDROP hDropInfo)
 	SplitStr(strDriverPath, gap, items);
 	INT_PTR num = items.GetCount();
 	strDriverName = items.GetAt(num - 1);
-	m_DriverHelp.setName(strDriverName);
-	m_DriverHelp.setPath(strDriverPath);
 	path = (CMFCEditBrowseCtrl*)GetDlgItem(IDC_MFCEDITBROWSE);
 	name = (CEdit*)GetDlgItem(IDC_ServiceName);
 	path->SetWindowTextW(strDriverPath.AllocSysString());
