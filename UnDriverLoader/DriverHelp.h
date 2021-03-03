@@ -7,8 +7,8 @@ class DriverHelp
 private:
 
 
-	LPCWSTR pszDriverName;
-	LPCWSTR pszDriverPath;
+	LPCWSTR pszDriverName = NULL;
+	LPCWSTR pszDriverPath = NULL;
 
 public:
 	DriverHelp();

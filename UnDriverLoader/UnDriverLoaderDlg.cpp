@@ -99,25 +99,57 @@ HCURSOR CUnDriverLoaderDlg::OnQueryDragIcon()
 
 void CUnDriverLoaderDlg::OnBnClickedRegister()
 {
-	m_DriverHelp.RegisterDriver();// TODO: 在此添加控件通知处理程序代码
+	CString str;
+	DWORD ErrCode;
+	if (m_DriverHelp.RegisterDriver())
+	{
+		MessageBoxW(_T("服务注册成功！"),_T("信息"),MB_OK|MB_ICONINFORMATION);
+	}
+	ErrCode = GetLastError();
+	str.Format(_T("服务注册失败！错误代码：%#x"), ErrCode);
+	MessageBoxW(str.AllocSysString(), _T("警告"),MB_OKCANCEL|MB_ICONWARNING);
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedRun()
 {
-	m_DriverHelp.RunDriver();// TODO: 在此添加控件通知处理程序代码
+	CString str;
+	DWORD ErrCode;
+	if (m_DriverHelp.RunDriver())
+	{
+		MessageBoxW(_T("服务运行成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+	}
+	ErrCode = GetLastError();
+	str.Format(_T("服务运行失败！错误代码：%#x"), ErrCode);
+	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedStop()
 {
-	m_DriverHelp.StopDriver();// TODO: 在此添加控件通知处理程序代码
+	CString str;
+	DWORD ErrCode;
+	if (m_DriverHelp.StopDriver())
+	{
+		MessageBoxW(_T("服务停止成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+	}
+	ErrCode = GetLastError();
+	str.Format(_T("服务停止失败！错误代码：%#x"), ErrCode);
+	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedUnload()
 {
-	m_DriverHelp.UnRegisterDriver();// TODO: 在此添加控件通知处理程序代码
+	CString str;
+	DWORD ErrCode;
+	if (m_DriverHelp.UnRegisterDriver())
+	{
+		MessageBoxW(_T("服务卸载成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+	}
+	ErrCode = GetLastError();
+	str.Format(_T("服务卸载失败！错误代码：%#x"), ErrCode);
+	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
 }
 
 
