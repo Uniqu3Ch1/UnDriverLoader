@@ -54,7 +54,8 @@ BOOL CUnDriverLoaderDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-
+	ChangeWindowMessageFilter(WM_DROPFILES, MSGFLT_ADD);
+	ChangeWindowMessageFilter(0x0049, MSGFLT_ADD);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
