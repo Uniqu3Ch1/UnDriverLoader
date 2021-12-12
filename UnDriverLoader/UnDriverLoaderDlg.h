@@ -24,12 +24,14 @@ private:
 	CString strDriverName;
 	DriverHelp m_DriverHelp;
 	CMFCEditBrowseCtrl m_EditBrowse;
+	enum class m_Status{ Success, Fail };
 // 实现
 protected:
 	HICON m_hIcon;
 
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
+	void LogMessage(m_Status status, CString msg);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()

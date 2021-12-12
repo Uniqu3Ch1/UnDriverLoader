@@ -30,6 +30,7 @@
 
 
 #include <winsvc.h>
+#include <winbase.h>
 
 
 

@@ -99,77 +99,62 @@ HCURSOR CUnDriverLoaderDlg::OnQueryDragIcon()
 
 void CUnDriverLoaderDlg::OnBnClickedRegister()
 {
-	CString str;
-	DWORD ErrCode;
 	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
 	GetDlgItemText(IDC_ServiceName, strDriverName);
 	m_DriverHelp.setName(strDriverName);
 	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.RegisterDriver())
 	{
-		MessageBoxW(_T("服务注册成功！"),_T("信息"),MB_OK|MB_ICONINFORMATION);
+		LogMessage(m_Status::Success, _T("服务注册成功！"));
 		return;
 	}
-	ErrCode = GetLastError();
-	str.Format(_T("服务注册失败！错误代码：%#x"), ErrCode);
-	MessageBoxW(str.AllocSysString(), _T("警告"),MB_OKCANCEL|MB_ICONWARNING);
+	LogMessage(m_Status::Fail, _T("服务注册失败！"));
+	
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedRun()
 {
-	CString str;
-	DWORD ErrCode;
 	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
 	GetDlgItemText(IDC_ServiceName, strDriverName);
 	m_DriverHelp.setName(strDriverName);
 	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.RunDriver())
 	{
-		MessageBoxW(_T("服务运行成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		LogMessage(m_Status::Success, _T("服务运行成功！"));
 		return;
 	}
-	ErrCode = GetLastError();
-	str.Format(_T("服务运行失败！错误代码：%#x"), ErrCode);
-	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
+	LogMessage(m_Status::Fail, _T("服务运行失败！"));
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedStop()
 {
-	CString str;
-	DWORD ErrCode;
 	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
 	GetDlgItemText(IDC_ServiceName, strDriverName);
 	m_DriverHelp.setName(strDriverName);
 	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.StopDriver())
 	{
-		MessageBoxW(_T("服务停止成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		LogMessage(m_Status::Success, _T("服务停止成功！"));
 		return;
 	}
-	ErrCode = GetLastError();
-	str.Format(_T("服务停止失败！错误代码：%#x"), ErrCode);
-	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
+	LogMessage(m_Status::Fail, _T("服务停止失败！"));
 }
 
 
 void CUnDriverLoaderDlg::OnBnClickedUnload()
 {
-	CString str;
-	DWORD ErrCode;
 	GetDlgItemText(IDC_MFCEDITBROWSE, strDriverPath);
 	GetDlgItemText(IDC_ServiceName, strDriverName);
 	m_DriverHelp.setName(strDriverName);
 	m_DriverHelp.setPath(strDriverPath);
 	if (m_DriverHelp.UnRegisterDriver())
 	{
-		MessageBoxW(_T("服务卸载成功！"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+		LogMessage(m_Status::Success, _T("服务卸载成功！"));
 		return;
 	}
-	ErrCode = GetLastError();
-	str.Format(_T("服务卸载失败！错误代码：%#x"), ErrCode);
-	MessageBoxW(str.AllocSysString(), _T("警告"), MB_OKCANCEL | MB_ICONWARNING);
+	LogMessage(m_Status::Fail, _T("服务卸载失败！"));
 }
 
 
@@ -228,4 +213,39 @@ void CUnDriverLoaderDlg::OnSize(UINT nType, int cx, int cy)
 	}
 
 	// TODO: 在此处添加消息处理程序代码
+}
+
+void CUnDriverLoaderDlg::LogMessage(m_Status status, CString msg) {
+	LPVOID lpmsg;
+	DWORD err = GetLastError();
+
+	switch (status)
+	{
+	case CUnDriverLoaderDlg::m_Status::Success:
+		MessageBoxW(msg, _T("提示"), MB_OK | MB_ICONINFORMATION);
+		break;
+	case CUnDriverLoaderDlg::m_Status::Fail:
+		
+		if (
+			FormatMessage(
+			FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			err,
+			LANG_SYSTEM_DEFAULT,
+			(LPTSTR) &lpmsg,
+			0,
+			NULL) == 0
+			)
+		{
+			MessageBoxW(_T("错误消息解析失败，请重试！"), _T("提示"), MB_OK | MB_ICONINFORMATION);
+			break;
+		}// msg error
+
+		MessageBoxW(msg + (LPTSTR)lpmsg, _T("提示"), MB_OK | MB_ICONINFORMATION);
+		LocalFree(lpmsg);
+		break;
+	default:
+		break;
+	}
+	return;
 }

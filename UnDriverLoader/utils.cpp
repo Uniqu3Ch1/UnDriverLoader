@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "utils.h"
 
 void SplitStr(CString strSrc, CString strGap, CStringArray& strResult)
 {
